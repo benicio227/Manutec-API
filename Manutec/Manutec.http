@@ -1,0 +1,6 @@
+@Manutec_HostAddress = http://localhost:5078
+
+GET {{Manutec_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

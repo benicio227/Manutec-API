@@ -1,0 +1,55 @@
+# ASP.NET Core
+**/bin/
+**/obj/
+**/out/
+.vs/
+
+# User-specific files
+.idea/
+.vscode/
+
+# User-specific files for Visual Studio for Mac
+.vsconfig
+
+# User-specific files for Visual Studio Code
+.history/
+*.code-workspace
+
+# ASP.NET Core build output
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows Installer files
+Thumbs.db
+ehthumbs.db
+
+# Windows Installer files
+*.user
+*.userosscache
+*.suo
+*.userprefs
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# NPM/Yarn
+node_modules/
+
+# macOS
+.DS_Store
+
+# Windows
+Desktop.ini
+
+# Linux
+*~
+
+# Azure Functions (if applicable)
+local.settings.json

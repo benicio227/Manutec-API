@@ -10,5 +10,6 @@ public class WorkShop
     public ICollection<User> Users { get; private set; }
     public ICollection<Customer> Customers { get; private set; }
     public ICollection<Vehicle> Vehicles { get; private set; }
+    public ICollection<Maintenance> Maintenances { get; private set; }
 
 }

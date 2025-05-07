@@ -9,6 +9,7 @@ public class Maintenance
     public int WorkShopId {  get; set; }
     public MaintenanceType Type {  get; set; }
     public DateTime ScheduledDate {  get; set; }
+    public int ScheduledMileage { get; set; }
     public DateTime? PerformedDate { get; set; }
     public int? PerformedMileage { get; set; }
     public decimal Cost { get; set; }

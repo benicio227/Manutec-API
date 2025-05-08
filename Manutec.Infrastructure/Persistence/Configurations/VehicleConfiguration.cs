@@ -18,8 +18,9 @@ public class VehicleConfiguration : IEntityTypeConfiguration<Vehicle>
 
         builder.HasIndex(v => new { v.LicensePlate, v.WorkShopId }).IsUnique();
 
-        builder.HasMany(v => v.Maintenances)
-            .WithOne(m => m.Vehicle)
-            .HasForeignKey(m => m.VehicleId);
+        builder.HasOne(v => v.Customer)
+            .WithMany(c => c.Vehicles)
+            .HasForeignKey(v => v.CustomerId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

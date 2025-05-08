@@ -16,18 +16,22 @@ public class WorkShopConfiguration : IEntityTypeConfiguration<WorkShop>
 
         builder.HasMany(w => w.Users)
             .WithOne(u => u.WorkShop)
-            .HasForeignKey(u => u.WorkShopId);
+            .HasForeignKey(u => u.WorkShopId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasMany(w => w.Customers)
             .WithOne(c => c.WorkShop)
-            .HasForeignKey(c => c.WorkShopId);
+            .HasForeignKey(c => c.WorkShopId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasMany(w => w.Maintenances)
             .WithOne(m => m.WorkShop)
-            .HasForeignKey(m => m.WorkShopId);
+            .HasForeignKey(m => m.WorkShopId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasMany(w => w.Vehicles)
             .WithOne(v => v.WorkShop)
-            .HasForeignKey(v => v.WorkShopId);
+            .HasForeignKey(v => v.WorkShopId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

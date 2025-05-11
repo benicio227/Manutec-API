@@ -73,8 +73,15 @@ public class Maintenance
     {
         IsDeleted = true;
     }
-    public void Completed()
+    public void Completed(DateTime? performedDate, int? performedMileage)
     {
+        if (performedDate == default || performedMileage <= 0)
+        {
+            throw new Exception("Data e quilometragem de execução são obrigatórias ao concluir.");
+        }
+        PerformedDate = performedDate;
+        PerformedMileage = performedMileage;
+
         IsCompleted = true;
     }
 

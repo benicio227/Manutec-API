@@ -13,16 +13,14 @@ public class UpdateMaintenanceStatusHandler : IRequestHandler<UpdateMaintenanceS
     }
     public async Task<UpdateCompletedStatusMaintenanceViewModel> Handle(UpdateMaintenanceStatusCompletedCommand request, CancellationToken cancellationToken)
     {
-        var maintenance = await _maintenanceRepository.GetById(request.WorkShopId, request.VehicleId);
+        var maintenance = await _maintenanceRepository.GetById(request.Id, request.WorkShopId, request.VehicleId);
 
         if (maintenance is null)
         {
             throw new Exception("Manutenção não encontrada");
         }
 
-        maintenance.UpdateScheduledDate(request.ScheduledDate);
-        maintenance.UpdateScheduledMileage(request.ScheduledMileage);
-        maintenance.Completed();
+        maintenance.Completed(request.PerformedDate, request.PerformedMileage);
 
         await _maintenanceRepository.Update(maintenance);
 

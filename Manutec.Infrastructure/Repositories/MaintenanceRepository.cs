@@ -19,21 +19,17 @@ public class MaintenanceRepository : IMaintenanceRepository
         return maintenance;
     }
 
-    public async Task<Maintenance?> Complete(int workShopId, int vehicleId)
-    {
-        var maintenance = await GetById(workShopId, vehicleId);
 
-        return maintenance;
+    public async Task<List<Maintenance>> GetAllByWorkShopIdAndVehicleId(int workShopId, int vehicleId)
+    {
+        var maintenances = await _context.Maintenances.Where(m => m.WorkShopId == workShopId && m.VehicleId == vehicleId).ToListAsync();
+
+        return maintenances;
     }
 
-    public async Task<List<Maintenance>> GetAllByWorkShopId(int workShopId)
+    public async Task<Maintenance?> GetById(int id, int workShopId, int vehicleId)
     {
-        throw new NotImplementedException();
-    }
-
-    public async Task<Maintenance?> GetById(int workShopId, int vehicleId)
-    {
-        var maintenance = await _context.Maintenances.FirstOrDefaultAsync(m => m.WorkShopId == workShopId && m.VehicleId == vehicleId);
+        var maintenance = await _context.Maintenances.FirstOrDefaultAsync(m => m.WorkShopId == workShopId && m.VehicleId == vehicleId && m.Id == id);
 
         return maintenance;
     }

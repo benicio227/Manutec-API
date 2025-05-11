@@ -12,6 +12,8 @@ public class MaintenanceConfiguration : IEntityTypeConfiguration<Maintenance>
         builder.Property(m => m.Type).IsRequired();
         builder.Property(m => m.ScheduledDate).IsRequired();
         builder.Property(m => m.ScheduledMileage).IsRequired();
+        builder.Property(m => m.PerformedDate).IsRequired(false);
+        builder.Property(m => m.PerformedMileage).IsRequired(false);
         builder.Property(m => m.Cost).HasColumnType("decimal(10,2)");
         builder.Property(m => m.Description).HasMaxLength(500);
         builder.Property(m => m.IsCompleted).IsRequired();

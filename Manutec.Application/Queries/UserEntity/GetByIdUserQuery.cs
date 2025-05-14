@@ -3,7 +3,7 @@ using Manutec.Core.Entities;
 using MediatR;
 
 namespace Manutec.Application.Queries.UserEntity;
-public class GetByIdUserQuery : IRequest<User>
+public class GetByIdUserQuery : IRequest<ResultViewModel<User>>
 {
     public GetByIdUserQuery(int workShopId, int id)
     {

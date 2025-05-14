@@ -14,6 +14,11 @@ public class ResultViewModel
     {
         return new ResultViewModel(false, message);
     }
+
+    public static ResultViewModel Success()
+    {
+        return new ResultViewModel();
+    }
 }
 
 public class ResultViewModel<T> : ResultViewModel

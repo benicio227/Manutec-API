@@ -1,4 +1,5 @@
 ﻿using Manutec.Application.Commands.WorkShopEntity;
+using Manutec.Application.Queries.WorkShopEntity;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,6 +25,19 @@ public class WorkShopController : ControllerBase
             return BadRequest(result.Message);
         }
 
-        return Created(string.Empty, result);
+        return CreatedAtAction(nameof(GetById), new { id = result.Data?.Id }, result.Data);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult> GetById(GetByIdWorkShopQuery query)
+    {
+        var result = await _mediator.Send(query);
+
+        if (!result.IsSuccess)
+        {
+            return BadRequest(result.Message);
+        }
+
+        return Ok(result);
     }
 }

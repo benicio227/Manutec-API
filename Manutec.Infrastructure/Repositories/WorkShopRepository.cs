@@ -1,6 +1,7 @@
 ﻿using Manutec.Core.Entities;
 using Manutec.Core.Repositories;
 using Manutec.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace Manutec.Infrastructure.Repositories;
 public class WorkShopRepository : IWorkShopRepository
@@ -15,6 +16,12 @@ public class WorkShopRepository : IWorkShopRepository
     {
         _context.WorkShops.Add(workShop);
         await _context.SaveChangesAsync();
+        return workShop;
+    }
+
+    public async Task<WorkShop?> GetById(int id)
+    {
+        var workShop = await _context.WorkShops.FirstOrDefaultAsync(w => w.Id == id);
         return workShop;
     }
 }

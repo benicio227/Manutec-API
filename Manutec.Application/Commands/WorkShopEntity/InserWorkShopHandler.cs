@@ -1,9 +1,10 @@
 ﻿using Manutec.Application.Models;
+using Manutec.Application.Models.WorkShopModel;
 using Manutec.Core.Repositories;
 using MediatR;
 
 namespace Manutec.Application.Commands.WorkShopEntity;
-public class InserWorkShopHandler : IRequestHandler<InsertWorkShopCommand, WorkShopViewModel>
+public class InserWorkShopHandler : IRequestHandler<InsertWorkShopCommand, ResultViewModel<WorkShopViewModel>>
 {
     private readonly IWorkShopRepository _workShopRepository;
 
@@ -11,7 +12,7 @@ public class InserWorkShopHandler : IRequestHandler<InsertWorkShopCommand, WorkS
     {
         _workShopRepository = workShopRepository;
     }
-    public async Task<WorkShopViewModel> Handle(InsertWorkShopCommand request, CancellationToken cancellationToken)
+    public async Task<ResultViewModel<WorkShopViewModel>> Handle(InsertWorkShopCommand request, CancellationToken cancellationToken)
     {
         var workShop = request.ToEntity();
 
@@ -19,11 +20,11 @@ public class InserWorkShopHandler : IRequestHandler<InsertWorkShopCommand, WorkS
 
         if (existWorkShop is null)
         {
-            throw new Exception("Oficina não encontrada.");
+            return ResultViewModel<WorkShopViewModel>.Error("Oficina não encontrada.");
         }
 
         var model = WorkShopViewModel.FromEntity(workShop);
 
-        return model;
+        return ResultViewModel<WorkShopViewModel>.Success(model);
     }
 }

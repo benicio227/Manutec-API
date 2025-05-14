@@ -30,7 +30,7 @@ public class CustomerController : ControllerBase
             return BadRequest(result.Message);
         }
 
-        return Created(string.Empty, result);
+        return CreatedAtAction(nameof(GetById), new { id = result.Data?.Id}, result.Data);
     }
 
     [HttpGet]

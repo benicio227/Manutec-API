@@ -1,28 +1,34 @@
 ﻿using Manutec.Application.Models;
+using Manutec.Application.Models.UserModel;
 using Manutec.Core.Repositories;
+using Manutec.Infrastructure.Auth;
 using MediatR;
 
 namespace Manutec.Application.Commands.UserEntity;
-public class InsertUserHandler : IRequestHandler<InsertUserCommand, UserViewModel>
+public class InsertUserHandler : IRequestHandler<InsertUserCommand, ResultViewModel<UserViewModel>>
 {
     private readonly IUserRepository _userRepository;
-    public InsertUserHandler(IUserRepository userRepository)
+    private readonly IAuthService _authService;
+    public InsertUserHandler(IUserRepository userRepository, IAuthService authService)
     {
         _userRepository = userRepository;
+        _authService = authService;
     }
-    public async Task<UserViewModel> Handle(InsertUserCommand request, CancellationToken cancellationToken)
+    public async Task<ResultViewModel<UserViewModel>> Handle(InsertUserCommand request, CancellationToken cancellationToken)
     {
         var user = request.ToEntity();
+
+        user.UpdatePassword(_authService.ComputeHash(request.PasswordHash)); 
 
         var existUser = await _userRepository.Add(user);
 
         if (existUser is null)
         {
-            throw new Exception("Erro ao cadastrar usuário.");
+            return ResultViewModel<UserViewModel>.Error("Erro ao cadastrar usuário.");
         }
 
         var model = UserViewModel.FromEntity(user);
 
-        return model;
+        return ResultViewModel<UserViewModel>.Success(model);
     }
 }

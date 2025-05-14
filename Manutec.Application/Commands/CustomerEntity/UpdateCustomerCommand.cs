@@ -3,7 +3,7 @@ using Manutec.Core.Entities;
 using MediatR;
 
 namespace Manutec.Application.Commands.CustomerEntity;
-public class UpdateCustomerCommand : IRequest<UpdateCustomerViewModel>
+public class UpdateCustomerCommand : IRequest<ResultViewModel>
 {
     public int Id { get; set; }
     public int WorkShopId { get; set; }

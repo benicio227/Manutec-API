@@ -1,9 +1,10 @@
 ﻿using Manutec.Application.Models;
+using Manutec.Application.Models.CustomerModel;
 using Manutec.Core.Repositories;
 using MediatR;
 
 namespace Manutec.Application.Commands.CustomerEntity;
-public class UpdateCustomerHandler : IRequestHandler<UpdateCustomerCommand, UpdateCustomerViewModel>
+public class UpdateCustomerHandler : IRequestHandler<UpdateCustomerCommand, ResultViewModel>
 {
     private readonly ICustomerRepository _customerRepository;
 
@@ -11,7 +12,7 @@ public class UpdateCustomerHandler : IRequestHandler<UpdateCustomerCommand, Upda
     {
         _customerRepository = customerRepository;
     }
-    public async Task<UpdateCustomerViewModel> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
+    public async Task<ResultViewModel> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
     {
         var customer = request.ToEntity();
 
@@ -19,9 +20,8 @@ public class UpdateCustomerHandler : IRequestHandler<UpdateCustomerCommand, Upda
 
         if (customerExist is null)
         {
-            throw new Exception("Cliente não encontrado");
+            return ResultViewModel.Error("Cliente não encontrado");
         }
-
 
         customerExist.UpdateName(customer.Name);
         customerExist.UpdateEmail(customer.Email);
@@ -31,6 +31,6 @@ public class UpdateCustomerHandler : IRequestHandler<UpdateCustomerCommand, Upda
 
         var model = UpdateCustomerViewModel.FromEntity(customer);
 
-        return model;
+        return ResultViewModel.Success();
     }
 }

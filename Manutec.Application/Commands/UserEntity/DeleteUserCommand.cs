@@ -1,8 +1,9 @@
-﻿using MediatR;
+﻿using Manutec.Application.Models;
+using MediatR;
 using System.Runtime.CompilerServices;
 
 namespace Manutec.Application.Commands.UserEntity;
-public class DeleteUserCommand : IRequest<Unit>
+public class DeleteUserCommand : IRequest<ResultViewModel>
 {
     public DeleteUserCommand(int id, int workShopId)
     {

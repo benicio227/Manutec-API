@@ -1,9 +1,10 @@
 ﻿using Manutec.Application.Models;
+using Manutec.Application.Models.MaintenanceModel;
 using Manutec.Core.Repositories;
 using MediatR;
 
 namespace Manutec.Application.Queries.MaintenanceEntity;
-public class GetAllMaintenanceHandler : IRequestHandler<GetAllMaintenanceQuery, MaintenancesViewModel>
+public class GetAllMaintenanceHandler : IRequestHandler<GetAllMaintenanceQuery, ResultViewModel<MaintenancesViewModel>>
 {
     private readonly IMaintenanceRepository _maintenanceRepository;
 
@@ -11,17 +12,17 @@ public class GetAllMaintenanceHandler : IRequestHandler<GetAllMaintenanceQuery, 
     {
         _maintenanceRepository = maintenanceRepository;
     }
-    public async Task<MaintenancesViewModel> Handle(GetAllMaintenanceQuery request, CancellationToken cancellationToken)
+    public async Task<ResultViewModel<MaintenancesViewModel>> Handle(GetAllMaintenanceQuery request, CancellationToken cancellationToken)
     {
         var maintenances = await _maintenanceRepository.GetAllByWorkShopIdAndVehicleId(request.WorkShopId, request.VehicleId);
 
         if (maintenances is null)
         {
-            throw new Exception("Nenhuma manutenção encontrada");
+            return ResultViewModel<MaintenancesViewModel>.Error("Nenhuma manutenção encontrada");
         }
 
         var model = MaintenancesViewModel.FromEntity(maintenances);
 
-        return model;
+        return ResultViewModel<MaintenancesViewModel>.Success(model);
     }
 }

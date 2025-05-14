@@ -1,8 +1,9 @@
 ﻿using Manutec.Application.Models;
+using Manutec.Application.Models.CustomerModel;
 using MediatR;
 
 namespace Manutec.Application.Queries.CustomerEntity;
-public class GetByIdCustomerQuery : IRequest<CustomerViewModel>
+public class GetByIdCustomerQuery : IRequest<ResultViewModel<CustomerViewModel>>
 {
     public GetByIdCustomerQuery(int workShopId, int id)
     {

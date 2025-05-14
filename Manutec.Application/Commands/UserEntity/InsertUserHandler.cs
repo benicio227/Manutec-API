@@ -29,6 +29,6 @@ public class InsertUserHandler : IRequestHandler<InsertUserCommand, ResultViewMo
 
         var model = UserViewModel.FromEntity(user);
 
-        return ResultViewModel<UserViewModel>.Success(model);
+        return ResultViewModel<UserViewModel>.Success(new UserViewModel(user.Id));
     }
 }

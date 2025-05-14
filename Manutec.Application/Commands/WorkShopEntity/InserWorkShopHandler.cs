@@ -23,8 +23,6 @@ public class InserWorkShopHandler : IRequestHandler<InsertWorkShopCommand, Resul
             return ResultViewModel<WorkShopViewModel>.Error("Oficina não encontrada.");
         }
 
-        var model = WorkShopViewModel.FromEntity(workShop);
-
-        return ResultViewModel<WorkShopViewModel>.Success(model);
+        return ResultViewModel<WorkShopViewModel>.Success(new WorkShopViewModel(workShop.Id));
     }
 }

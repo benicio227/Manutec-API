@@ -25,6 +25,6 @@ public class InsertCustomerHandler : IRequestHandler<InsertCustomerCommand, Resu
 
         var model = CustomerViewModel.FromEntity(customer);
 
-        return ResultViewModel<CustomerViewModel>.Success(model);
+        return ResultViewModel<CustomerViewModel>.Success(new CustomerViewModel(customer.Id));
     }
 }

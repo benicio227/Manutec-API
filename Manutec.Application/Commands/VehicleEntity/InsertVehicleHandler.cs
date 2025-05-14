@@ -30,8 +30,6 @@ public class InsertVehicleHandler : IRequestHandler<InsertVehicleCommand, Result
             return ResultViewModel<VehicleViewModel>.Error("Veículo não cadastrado.");
         }
 
-        var model = VehicleViewModel.FromEntity(vehicle);
-
-        return ResultViewModel<VehicleViewModel>.Success(model);
+        return ResultViewModel<VehicleViewModel>.Success(new VehicleViewModel(vehicle.Id));
     }
 }

@@ -1,10 +1,11 @@
 ﻿using Manutec.Application.Models;
+using Manutec.Application.Models.UserModel;
 using Manutec.Core.Entities;
 using Manutec.Core.Enums;
 using MediatR;
 
 namespace Manutec.Application.Commands.UserEntity;
-public class UpdateUserCommand : IRequest<UpdateViewModel>
+public class UpdateUserCommand : IRequest<ResultViewModel<UpdateUserViewModel>>
 {
     public int Id {  get; set; }
     public string UserName { get; set; }

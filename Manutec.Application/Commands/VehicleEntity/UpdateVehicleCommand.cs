@@ -3,7 +3,7 @@ using Manutec.Core.Entities;
 using MediatR;
 
 namespace Manutec.Application.Commands.VehicleEntity;
-public class UpdateVehicleCommand : IRequest<VehicleViewModel>
+public class UpdateVehicleCommand : IRequest<ResultViewModel>
 {
     public int Id { get; set; }
     public int CustomerId { get; set; }
@@ -13,9 +13,10 @@ public class UpdateVehicleCommand : IRequest<VehicleViewModel>
     public int Year { get; set; }
     public string LicensePlate { get; set; }
     public int CurrentMileage { get; set; }
+    public int ToleranceKm {  get; set; }
 
     public Vehicle ToEntity()
     {
-        return new Vehicle(CustomerId, WorkShopId, Brand, Model, Year, LicensePlate, CurrentMileage);
+        return new Vehicle(CustomerId, WorkShopId, Brand, Model, Year, LicensePlate, CurrentMileage, ToleranceKm);
     }
 }

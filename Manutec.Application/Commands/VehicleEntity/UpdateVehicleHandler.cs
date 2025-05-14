@@ -1,9 +1,10 @@
 ﻿using Manutec.Application.Models;
+using Manutec.Application.Models.VehicleModel;
 using Manutec.Core.Repositories;
 using MediatR;
 
 namespace Manutec.Application.Commands.VehicleEntity;
-public class UpdateVehicleHandler : IRequestHandler<UpdateVehicleCommand, VehicleViewModel>
+public class UpdateVehicleHandler : IRequestHandler<UpdateVehicleCommand, ResultViewModel>
 {
     private readonly IVehicleRepository _vehicleRepository;
 
@@ -11,7 +12,7 @@ public class UpdateVehicleHandler : IRequestHandler<UpdateVehicleCommand, Vehicl
     {
         _vehicleRepository = vehicleRepository;
     }
-    public async Task<VehicleViewModel> Handle(UpdateVehicleCommand request, CancellationToken cancellationToken)
+    public async Task<ResultViewModel> Handle(UpdateVehicleCommand request, CancellationToken cancellationToken)
     {
         var vehicle = request.ToEntity();
 
@@ -19,7 +20,7 @@ public class UpdateVehicleHandler : IRequestHandler<UpdateVehicleCommand, Vehicl
 
         if (vehicleExist is null)
         {
-            throw new Exception("Veículo não encontrado");
+            return ResultViewModel.Error("Veículo não encontrado");
         }
 
         vehicleExist.UpdateYear(request.Year);
@@ -30,6 +31,6 @@ public class UpdateVehicleHandler : IRequestHandler<UpdateVehicleCommand, Vehicl
 
         var model = VehicleViewModel.FromEntity(vehicle);
 
-        return model;
+        return ResultViewModel.Success();
     }
 }

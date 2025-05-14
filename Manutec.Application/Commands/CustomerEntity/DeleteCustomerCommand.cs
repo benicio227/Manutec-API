@@ -1,7 +1,8 @@
-﻿using MediatR;
+﻿using Manutec.Application.Models;
+using MediatR;
 
 namespace Manutec.Application.Commands.CustomerEntity;
-public class DeleteCustomerCommand : IRequest<Unit>
+public class DeleteCustomerCommand : IRequest<ResultViewModel>
 {
     public DeleteCustomerCommand(int id, int workShopId)
     {

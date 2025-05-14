@@ -196,6 +196,9 @@ namespace Manutec.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int>("ToleranceKm")
+                        .HasColumnType("int");
+
                     b.Property<int>("WorkShopId")
                         .HasColumnType("int");
 

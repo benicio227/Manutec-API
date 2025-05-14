@@ -1,8 +1,16 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Manutec.Api.ExceptionHandler;
 using Manutec.Application.Commands.UserEntity;
 using Manutec.Core.Repositories;
+using Manutec.Infrastructure.Auth;
 using Manutec.Infrastructure.Persistence;
 using Manutec.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Manutec;
 
@@ -12,8 +20,57 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        var jwtSettings = builder.Configuration.GetSection("JWT");
+        var secretKey = jwtSettings["Key"];
+        var issuer = jwtSettings["Issuer"];
+        var audience = jwtSettings["Audience"];
+
 
         builder.Services.AddMediatR(config => config.RegisterServicesFromAssemblyContaining<InsertUserCommand>());
+
+        builder.Services.AddFluentValidationAutoValidation();
+        builder.Services.AddValidatorsFromAssemblyContaining<InsertUserCommand>();
+
+      
+
+        builder.Services.AddExceptionHandler<ApiExceptionHandler>();
+        builder.Services.AddProblemDetails();
+
+        builder.Services
+            .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(o =>
+            {
+                o.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = issuer,
+                    ValidAudience = audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
+                  
+                };
+
+                o.Events = new JwtBearerEvents
+                {
+                    OnAuthenticationFailed = context =>
+                    {
+                        Console.WriteLine($"Token inválido: {context.Exception.Message}");
+                        return Task.CompletedTask;
+                    }
+                };
+
+            });
+
+
+            builder.Services.AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
+
+       
 
         var connectionString = builder.Configuration.GetConnectionString("Manutec.Cs");
 
@@ -25,6 +82,11 @@ public class Program
         builder.Services.AddScoped<IMaintenanceRepository, MaintenanceRepository>();
         builder.Services.AddScoped<IWorkShopRepository, WorkShopRepository>();
 
+        builder.Services.AddScoped<IAuthService, AuthService>();
+        builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+        builder.Services.AddScoped<ILoggedUser, LoggedUser>();
+
+        builder.Services.AddAuthorization();
         builder.Services.AddControllers();
 
         builder.Services.AddEndpointsApiExplorer();
@@ -39,12 +101,15 @@ public class Program
             app.UseSwaggerUI();
         }
 
+        app.UseExceptionHandler();
+
         app.UseHttpsRedirection();
 
+        app.UseAuthentication();
         app.UseAuthorization();
-
-
         app.MapControllers();
+
+
 
         app.Run();
     }

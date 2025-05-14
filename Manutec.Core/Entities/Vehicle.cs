@@ -1,7 +1,7 @@
 ﻿namespace Manutec.Core.Entities;
 public class Vehicle
 {
-    public Vehicle(int customerId, int workShopId, string brand, string model, int year, string licensePlate, int currentMileage)
+    public Vehicle(int customerId, int workShopId, string brand, string model, int year, string licensePlate, int currentMileage, int toleranceKm)
     {
         CustomerId = customerId;
         WorkShopId = workShopId;
@@ -15,6 +15,7 @@ public class Vehicle
         IsDeleted = false;
 
         Maintenances = new List<Maintenance>();
+        ToleranceKm = toleranceKm;  
     }
     public int Id { get; private set; }
     public int CustomerId {  get; private set; }
@@ -24,6 +25,7 @@ public class Vehicle
     public int Year {  get; private set; }
     public string LicensePlate {  get; private set; }
     public int CurrentMileage {  get; private set; }
+    public int ToleranceKm {  get; private set; }
     public bool IsDeleted { get; private set; }
     public DateTime CreatedAt { get; private set; }
 

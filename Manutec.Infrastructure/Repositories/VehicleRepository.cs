@@ -26,15 +26,28 @@ public class VehicleRepository : IVehicleRepository
         return vehicle;
     }
 
-    public async Task<List<Vehicle>> GetAllByWorkShopId(int workShopId)
+    public async Task<bool> ExistsWithSamePlateInWorkShop(string licensePlate, int workShopId)
     {
-        var vehicles = await _context.Vehicles.Where(v => v.WorkShopId == workShopId).ToListAsync();
+        return await _context.Vehicles
+            .AnyAsync(v => v.LicensePlate == licensePlate && v.WorkShopId == workShopId);
+    }
+
+    public async Task<List<Vehicle>> GetAllByWorkShopIdAndCustomerId(int workShopId, int customerId)
+    {
+        var vehicles = await _context.Vehicles.Where(v => v.WorkShopId == workShopId && v.CustomerId == customerId).ToListAsync();
         return vehicles;
     }
 
     public async Task<Vehicle?> GetById(int workShopid, int customerId, int id)
     {
         var vehicle = await _context.Vehicles.FirstOrDefaultAsync(v => v.Id == id && v.CustomerId == customerId && v.WorkShopId == workShopid);
+
+        return vehicle;
+    }
+
+    public async Task<Vehicle?> GetVehicleById(int id)
+    {
+        var vehicle = await _context.Vehicles.FirstOrDefaultAsync(v => v.Id == id);
 
         return vehicle;
     }

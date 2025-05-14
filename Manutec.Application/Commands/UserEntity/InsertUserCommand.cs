@@ -1,10 +1,11 @@
 ﻿using Manutec.Application.Models;
+using Manutec.Application.Models.UserModel;
 using Manutec.Core.Entities;
 using Manutec.Core.Enums;
 using MediatR;
 
 namespace Manutec.Application.Commands.UserEntity;
-public class InsertUserCommand : IRequest<UserViewModel>
+public class InsertUserCommand : IRequest<ResultViewModel<UserViewModel>>
 {
     public string UserName { get; set; }
     public int WorkShopId { get; set; }

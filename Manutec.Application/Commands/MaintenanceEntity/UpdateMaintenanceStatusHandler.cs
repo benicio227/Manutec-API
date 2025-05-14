@@ -1,9 +1,10 @@
 ﻿using Manutec.Application.Models;
+using Manutec.Application.Models.MaintenanceModel;
 using Manutec.Core.Repositories;
 using MediatR;
 
 namespace Manutec.Application.Commands.MaintenanceEntity;
-public class UpdateMaintenanceStatusHandler : IRequestHandler<UpdateMaintenanceStatusCompletedCommand, UpdateCompletedStatusMaintenanceViewModel>
+public class UpdateMaintenanceStatusHandler : IRequestHandler<UpdateMaintenanceStatusCompletedCommand, ResultViewModel<UpdateCompletedStatusMaintenanceViewModel>>
 {
     private readonly IMaintenanceRepository _maintenanceRepository;
 
@@ -11,13 +12,18 @@ public class UpdateMaintenanceStatusHandler : IRequestHandler<UpdateMaintenanceS
     {
         _maintenanceRepository = maintenanceRepository;
     }
-    public async Task<UpdateCompletedStatusMaintenanceViewModel> Handle(UpdateMaintenanceStatusCompletedCommand request, CancellationToken cancellationToken)
+    public async Task<ResultViewModel<UpdateCompletedStatusMaintenanceViewModel>> Handle(UpdateMaintenanceStatusCompletedCommand request, CancellationToken cancellationToken)
     {
         var maintenance = await _maintenanceRepository.GetById(request.Id, request.WorkShopId, request.VehicleId);
 
         if (maintenance is null)
         {
-            throw new Exception("Manutenção não encontrada");
+            return ResultViewModel<UpdateCompletedStatusMaintenanceViewModel>.Error("Manutenção não encontrada");
+        }
+
+        if (!maintenance.IsCompleted)
+        {
+            return ResultViewModel<UpdateCompletedStatusMaintenanceViewModel>.Error("Manutenção ainda não foi finalizada.");
         }
 
         maintenance.Completed(request.PerformedDate, request.PerformedMileage);
@@ -26,6 +32,6 @@ public class UpdateMaintenanceStatusHandler : IRequestHandler<UpdateMaintenanceS
 
         var model = UpdateCompletedStatusMaintenanceViewModel.FromEntity(maintenance);
 
-        return model;
+        return ResultViewModel<UpdateCompletedStatusMaintenanceViewModel>.Success(model);
     }
 }

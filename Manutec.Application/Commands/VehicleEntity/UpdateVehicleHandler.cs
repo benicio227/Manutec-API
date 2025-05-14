@@ -1,5 +1,4 @@
 ﻿using Manutec.Application.Models;
-using Manutec.Application.Models.VehicleModel;
 using Manutec.Core.Repositories;
 using MediatR;
 
@@ -28,8 +27,6 @@ public class UpdateVehicleHandler : IRequestHandler<UpdateVehicleCommand, Result
         vehicleExist.UpdateCurrentMileage(request.CurrentMileage);
 
         await _vehicleRepository.Update(vehicleExist);
-
-        var model = VehicleViewModel.FromEntity(vehicle);
 
         return ResultViewModel.Success();
     }

@@ -1,9 +1,10 @@
 ﻿using Manutec.Application.Models;
+using Manutec.Application.Models.UserModel;
 using Manutec.Core.Repositories;
 using MediatR;
 
 namespace Manutec.Application.Commands.UserEntity;
-public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, UpdateViewModel>
+public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, ResultViewModel<UpdateUserViewModel>>
 {
     private readonly IUserRepository _userRepository;
 
@@ -11,7 +12,7 @@ public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, UpdateViewMo
     {
         _userRepository = userRepository;
     }
-    public async Task<UpdateViewModel> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+    public async Task<ResultViewModel<UpdateUserViewModel>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
     {
 
         var user = request.ToEntity();
@@ -20,7 +21,7 @@ public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, UpdateViewMo
 
         if (existUser is null)
         {
-            throw new Exception("Usuário não encontrado");
+            return ResultViewModel<UpdateUserViewModel>.Error("Usuário não encontrado");
         }
 
         existUser.UpdateName(request.UserName);
@@ -30,8 +31,8 @@ public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, UpdateViewMo
 
         await _userRepository.Update(existUser);
 
-        var model = UpdateViewModel.FromEntity(user);
+        var model = UpdateUserViewModel.FromEntity(user);
 
-        return model;
+        return ResultViewModel<UpdateUserViewModel>.Success(model);
     }
 }

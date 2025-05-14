@@ -1,65 +1,92 @@
 ﻿using Manutec.Application.Commands.CustomerEntity;
 using Manutec.Application.Queries.CustomerEntity;
+using Manutec.Infrastructure.Auth;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Manutec.Api.Controllers;
-[Route("api/workshops/{workShopId}/customers")]
+[Route("api/customers")]
 [ApiController]
 public class CustomerController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly ILoggedUser _loggedUser;
 
-    public CustomerController(IMediator mediator)
+    public CustomerController(IMediator mediator, ILoggedUser loggedUser)
     {
         _mediator = mediator;
+        _loggedUser = loggedUser;
     }
 
     [HttpPost]
-    public async Task<ActionResult> Post(int workShopId, InsertCustomerCommand command)
+    public async Task<ActionResult> Post(InsertCustomerCommand command)
     {
-        command.WorkShopId = workShopId;
+        command.WorkShopId = _loggedUser.WorkShopId;
 
         var result = await _mediator.Send(command);
+
+        if (!result.IsSuccess)
+        {
+            return BadRequest(result.Message);
+        }
 
         return Created(string.Empty, result);
     }
 
     [HttpGet]
-    public async Task<ActionResult> Get(int workShopId)
+    public async Task<ActionResult> Get()
     {
-        var query = new GetAllCustomerQuery { WorkShopId = workShopId };
+        var query = new GetAllCustomerQuery { WorkShopId = _loggedUser.WorkShopId};
 
         var result = await _mediator.Send(query);
+
+        if (!result.IsSuccess)
+        {
+            return BadRequest(result.Message);
+        }
 
         return Ok(result);
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult> GetById(int workShopId, int id)
+    public async Task<ActionResult> GetById(int id)
     {
 
-        var result = await _mediator.Send(new GetByIdCustomerQuery(workShopId, id));
+        var result = await _mediator.Send(new GetByIdCustomerQuery(_loggedUser.WorkShopId, id));
+
+        if (!result.IsSuccess)
+        {
+            return BadRequest(result.Message);
+        }
 
         return Ok(result);
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> Put(int workShopId, int id, UpdateCustomerCommand command)
+    public async Task<ActionResult> Put(int id, UpdateCustomerCommand command)
     {
         command.Id = id;
-        command.WorkShopId = workShopId;
+        command.WorkShopId = _loggedUser.WorkShopId;
 
         var result = await _mediator.Send(command);
+
+        if (!result.IsSuccess)
+        {
+            return BadRequest(result.Message);
+        }
 
         return NoContent();
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult> Delete(int workShopId, int id)
+    public async Task<ActionResult> Delete(int id)
     {
+        var result = await _mediator.Send(new DeleteCustomerCommand(id, _loggedUser.WorkShopId));
 
-        var result = await _mediator.Send(new DeleteCustomerCommand(id, workShopId));
+        if (!result.IsSuccess)
+        {
+            return BadRequest(result.Message);
+        }
 
         return NoContent();
 

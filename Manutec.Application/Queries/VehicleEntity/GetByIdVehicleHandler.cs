@@ -4,7 +4,7 @@ using Manutec.Core.Repositories;
 using MediatR;
 
 namespace Manutec.Application.Queries.VehicleEntity;
-public class GetByIdVehicleHandler : IRequestHandler<GetByIdVehicleQuery, ResultViewModel<VehicleViewModel>>
+public class GetByIdVehicleHandler : IRequestHandler<GetByIdVehicleQuery, ResultViewModel<GetByIdVehicleViewModel>>
 {
     private readonly IVehicleRepository _vehicleRepository;
 
@@ -12,17 +12,17 @@ public class GetByIdVehicleHandler : IRequestHandler<GetByIdVehicleQuery, Result
     {
         _vehicleRepository = vehicleRepository;
     }
-    public async Task<ResultViewModel<VehicleViewModel>> Handle(GetByIdVehicleQuery request, CancellationToken cancellationToken)
+    public async Task<ResultViewModel<GetByIdVehicleViewModel>> Handle(GetByIdVehicleQuery request, CancellationToken cancellationToken)
     {
         var vehicle = await _vehicleRepository.GetById(request.WorkShopId, request.CustomerId, request.Id);
 
         if (vehicle is null)
         {
-            return ResultViewModel<VehicleViewModel>.Error("Nenhum veículo encontrado");
+            return ResultViewModel<GetByIdVehicleViewModel>.Error("Nenhum veículo encontrado");
         }
 
-        var model = VehicleViewModel.FromEntity(vehicle);
+        var model = GetByIdVehicleViewModel.FromEntity(vehicle);
 
-        return ResultViewModel<VehicleViewModel>.Success(model);
+        return ResultViewModel<GetByIdVehicleViewModel>.Success(model);
     }
 }

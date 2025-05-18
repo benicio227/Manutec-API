@@ -73,4 +73,12 @@ Além disso, o código segue os princípios de **Clean Code**, com foco em nomes
 1. Clone o repositório:
 
 ```bash
-git clone git@github.com:seu-usuario/NomeDoProjeto.git
+git clone git@github.com:benicio227/Manutec-API.git
+````
+
+2. Acesse a documentação da API pelo Swagger:
+   ```bash
+   https://localhost:7148/swagger
+   ```
+OBS! A porta 7148 é a padrão configurada nesse projto. Caso esteja usando outra porta localmente, ajuste a URL conforme necessário.
+Exemplo: https://localhost:porta/swagger

@@ -20,6 +20,13 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        builder.Configuration
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddEnvironmentVariables() 
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+            .AddUserSecrets<Program>();
+
+
         var jwtSettings = builder.Configuration.GetSection("JWT");
         var secretKey = jwtSettings["Key"];
         var issuer = jwtSettings["Issuer"];
@@ -72,7 +79,7 @@ public class Program
 
        
 
-        var connectionString = builder.Configuration.GetConnectionString("Manutec.Cs");
+        var connectionString = builder.Configuration.GetConnectionString("Manutec");
 
         builder.Services.AddDbContext<ManutecDbContext>(o => o.UseSqlServer(connectionString));
 
@@ -95,7 +102,7 @@ public class Program
         var app = builder.Build();
 
    
-        if (app.Environment.IsDevelopment())
+        if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
         {
             app.UseSwagger();
             app.UseSwaggerUI();

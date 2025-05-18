@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Manutec.Core", "Manutec.Cor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Manutec.Infrastructure", "Manutec.Infrastructure\Manutec.Infrastructure.csproj", "{55FCE45D-18A3-4497-A1F3-79464F8B2167}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Manutec.UnitTests", "Manutec.UnitTests\Manutec.UnitTests.csproj", "{5DF37C2B-FA39-4678-9EFB-0262FC0663C7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{55FCE45D-18A3-4497-A1F3-79464F8B2167}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55FCE45D-18A3-4497-A1F3-79464F8B2167}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55FCE45D-18A3-4497-A1F3-79464F8B2167}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DF37C2B-FA39-4678-9EFB-0262FC0663C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DF37C2B-FA39-4678-9EFB-0262FC0663C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DF37C2B-FA39-4678-9EFB-0262FC0663C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DF37C2B-FA39-4678-9EFB-0262FC0663C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

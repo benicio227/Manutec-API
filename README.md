@@ -14,7 +14,7 @@ Além disso, o código segue os princípios de **Clean Code**, com foco em nomes
 
 ## Funcionalidades principais
 
-- **Cadastro de Clientes**: Registra clientes com validações de nome, CPF e dados de contato.
+- **Cadastro de Clientes**: Registra clientes com validações de nome, email e dados de contato.
 - **Cadastro de Veículos**: Permite associar veículos aos clientes, com informações como placa, modelo e ano.
 - **Abertura de Ordens de Serviço**: Gera ordens com data, descrição do problema, diagnóstico e valor.
 - **Atualização e Conclusão de Serviços**: Permite alterar status de ordens e registrar conclusão.

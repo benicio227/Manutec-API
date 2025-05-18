@@ -21,6 +21,8 @@ public class GetByIdWorkShopHandler : IRequestHandler<GetByIdWorkShopQuery, Resu
             return ResultViewModel<WorkShopViewModel>.Error("Oficina não encontrada.");
         }
 
-        return ResultViewModel<WorkShopViewModel>.Success(new WorkShopViewModel(workShop.Id));
+        var model = WorkShopViewModel.FromEntity(workShop);
+
+        return ResultViewModel<WorkShopViewModel>.Success(model);
     }
 }

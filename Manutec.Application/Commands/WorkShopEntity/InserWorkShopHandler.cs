@@ -4,7 +4,7 @@ using Manutec.Core.Repositories;
 using MediatR;
 
 namespace Manutec.Application.Commands.WorkShopEntity;
-public class InserWorkShopHandler : IRequestHandler<InsertWorkShopCommand, ResultViewModel<WorkShopViewModel>>
+public class InserWorkShopHandler : IRequestHandler<InsertWorkShopCommand, ResultViewModel<WorkShopViewModelId>>
 {
     private readonly IWorkShopRepository _workShopRepository;
 
@@ -12,17 +12,24 @@ public class InserWorkShopHandler : IRequestHandler<InsertWorkShopCommand, Resul
     {
         _workShopRepository = workShopRepository;
     }
-    public async Task<ResultViewModel<WorkShopViewModel>> Handle(InsertWorkShopCommand request, CancellationToken cancellationToken)
+    public async Task<ResultViewModel<WorkShopViewModelId>> Handle(InsertWorkShopCommand request, CancellationToken cancellationToken)
     {
-        var workShop = request.ToEntity();
-
-        var existWorkShop = await _workShopRepository.Add(workShop);
-
-        if (existWorkShop is null)
+        try
         {
-            return ResultViewModel<WorkShopViewModel>.Error("Oficina não encontrada.");
-        }
+            var workShop = request.ToEntity();
 
-        return ResultViewModel<WorkShopViewModel>.Success(new WorkShopViewModel(workShop.Id));
+            var existWorkShop = await _workShopRepository.Add(workShop);
+
+            if (existWorkShop is null)
+            {
+                return ResultViewModel<WorkShopViewModelId>.Error("Oficina não encontrada.");
+            }
+
+            return ResultViewModel<WorkShopViewModelId>.Success(new WorkShopViewModelId(existWorkShop.Id));
+        }
+        catch (Exception ex)
+        {
+            return ResultViewModel<WorkShopViewModelId>.Error($"Erro interno: {ex.Message}");
+        }
     }
 }

@@ -23,7 +23,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    [AllowAnonymous]
+   
     public async Task<ActionResult> Post(InsertUserCommand command)
     {
         var result = await _mediator.Send(command);

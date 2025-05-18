@@ -29,8 +29,10 @@ public class WorkShopController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult> GetById(GetByIdWorkShopQuery query)
+    public async Task<ActionResult> GetById(int id)
     {
+        var query = new GetByIdWorkShopQuery { Id = id };
+
         var result = await _mediator.Send(query);
 
         if (!result.IsSuccess)

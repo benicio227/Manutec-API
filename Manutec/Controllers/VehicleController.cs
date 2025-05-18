@@ -87,7 +87,11 @@ public class VehicleController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<ActionResult> Delete(int customerId, int id)
     {
-        var result = await _mediator.Send(new DeleteVehicleCommand(id, _loggedUser.WorkShopId, customerId));
+        var result = await _mediator.Send(new DeleteVehicleCommand{
+            Id = id,
+            CustomerId = customerId,
+            WorkShopId = _loggedUser.WorkShopId
+        });
 
         if (!result.IsSuccess)
         {

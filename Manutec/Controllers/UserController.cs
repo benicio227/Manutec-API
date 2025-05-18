@@ -1,9 +1,12 @@
 ﻿using Manutec.Application.Commands.UserEntity;
+using Manutec.Application.Models.VehicleModel;
+using Manutec.Application.Models;
 using Manutec.Application.Queries.UserEntity;
 using Manutec.Infrastructure.Auth;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Manutec.Application.Models.UserModel;
 
 
 namespace Manutec.Api.Controllers;
@@ -22,7 +25,9 @@ public class UserController : ControllerBase
         _loggedUser = loggedUser;
     }
 
-    [HttpPost]
+    [ProducesResponseType(typeof(ResultViewModel<UserViewModel>), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+    [HttpPost("register")]
    
     public async Task<ActionResult> Post(InsertUserCommand command)
     {
@@ -36,8 +41,10 @@ public class UserController : ControllerBase
         return CreatedAtAction(nameof(GetById), new {id = result.Data?.Id}, result.Data);
     }
 
+    [ProducesResponseType(typeof(ResultViewModel<List<UserViewModel>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     [HttpGet]
-    public async Task<ActionResult> Get()
+    public async Task<ActionResult> GetAll()
     {
         var query = new GetAllUserQuery { WorkShopId = _loggedUser.WorkShopId };
 
@@ -51,6 +58,8 @@ public class UserController : ControllerBase
         return Ok(result);
     }
 
+    [ProducesResponseType(typeof(ResultViewModel<UserViewModel>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     [HttpGet("{id}")]
     public async Task<ActionResult> GetById(int id)
     {
@@ -64,6 +73,8 @@ public class UserController : ControllerBase
         return Ok(result);
     }
 
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     [HttpPut("{id}")]
     public async Task<ActionResult> Put(int id, UpdateUserCommand command)
     {
@@ -80,6 +91,8 @@ public class UserController : ControllerBase
         return NoContent();
     }
 
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     [HttpDelete("{id}")]
     public async Task<ActionResult> Delete(int id)
     {

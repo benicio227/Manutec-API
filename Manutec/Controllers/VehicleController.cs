@@ -4,6 +4,8 @@ using Manutec.Application.Queries.VehicleEntity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Manutec.Infrastructure.Auth;
+using Manutec.Application.Models;
+using Manutec.Application.Models.VehicleModel;
 
 namespace Manutec.Api.Controllers;
 [Route("api/customers/{customerId}/vehicles")]
@@ -19,7 +21,9 @@ public class VehicleController : ControllerBase
         _loggedUser = loggedUser;
     }
 
-    [HttpPost]
+    [ProducesResponseType(typeof(ResultViewModel<VehicleViewModel>), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+    [HttpPost("register")]
     public async Task<ActionResult> Post(int customerId, InsertVehicleCommand command)
     {
         command.WorkShopId = _loggedUser.WorkShopId;
@@ -35,9 +39,11 @@ public class VehicleController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = result.Data?.Id}, result.Data);
     }
 
+    [ProducesResponseType(typeof(ResultViewModel<List<VehicleViewModel>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     [HttpGet]
     [Authorize(Roles = "1")]
-    public async Task<ActionResult> Get(int customerId)
+    public async Task<ActionResult> GetAll(int customerId)
     {
 
         var query = new GetAllVehicleQuery { WorkShopId = _loggedUser.WorkShopId, CustomerId = customerId };
@@ -52,6 +58,8 @@ public class VehicleController : ControllerBase
         return Ok(result);
     }
 
+    [ProducesResponseType(typeof(ResultViewModel<GetByIdVehicleViewModel>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     [HttpGet("{id}")]
     [Authorize]
     public async Task<ActionResult> GetById(int customerId, int id)
@@ -67,6 +75,8 @@ public class VehicleController : ControllerBase
         return Ok(result);
     }
 
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     [HttpPut("{id}")]
     public async Task<ActionResult> Put(int customerId, int id, UpdateVehicleCommand command)
     {
@@ -84,6 +94,8 @@ public class VehicleController : ControllerBase
         return NoContent();
     }
 
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     [HttpDelete("{id}")]
     public async Task<ActionResult> Delete(int customerId, int id)
     {

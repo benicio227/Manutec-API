@@ -1,7 +1,10 @@
 ﻿using Manutec.Application.Commands.WorkShopEntity;
+using Manutec.Application.Models.VehicleModel;
+using Manutec.Application.Models;
 using Manutec.Application.Queries.WorkShopEntity;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Manutec.Application.Models.WorkShopModel;
 
 namespace Manutec.Api.Controllers;
 [Route("api/[controller]")]
@@ -15,7 +18,9 @@ public class WorkShopController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpPost]
+    [ProducesResponseType(typeof(ResultViewModel<WorkShopViewModel>), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+    [HttpPost("register")]
     public async Task<ActionResult> Post(InsertWorkShopCommand command)
     {
         var result = await _mediator.Send(command);
@@ -28,6 +33,8 @@ public class WorkShopController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = result.Data?.Id }, result.Data);
     }
 
+    [ProducesResponseType(typeof(ResultViewModel<WorkShopViewModel>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     [HttpGet("{id}")]
     public async Task<ActionResult> GetById(int id)
     {

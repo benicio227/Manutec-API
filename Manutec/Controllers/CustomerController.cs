@@ -1,8 +1,11 @@
 ﻿using Manutec.Application.Commands.CustomerEntity;
+using Manutec.Application.Models.VehicleModel;
+using Manutec.Application.Models;
 using Manutec.Application.Queries.CustomerEntity;
 using Manutec.Infrastructure.Auth;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Manutec.Application.Models.CustomerModel;
 
 namespace Manutec.Api.Controllers;
 [Route("api/customers")]
@@ -18,7 +21,9 @@ public class CustomerController : ControllerBase
         _loggedUser = loggedUser;
     }
 
-    [HttpPost]
+    [ProducesResponseType(typeof(ResultViewModel<CustomerViewModel>), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+    [HttpPost("register")]
     public async Task<ActionResult> Post(InsertCustomerCommand command)
     {
         command.WorkShopId = _loggedUser.WorkShopId;
@@ -33,8 +38,10 @@ public class CustomerController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = result.Data?.Id}, result.Data);
     }
 
+    [ProducesResponseType(typeof(ResultViewModel<List<CustomerViewModel>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     [HttpGet]
-    public async Task<ActionResult> Get()
+    public async Task<ActionResult> GetAll()
     {
         var query = new GetAllCustomerQuery { WorkShopId = _loggedUser.WorkShopId};
 
@@ -48,6 +55,8 @@ public class CustomerController : ControllerBase
         return Ok(result);
     }
 
+    [ProducesResponseType(typeof(ResultViewModel<CustomerViewModel>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     [HttpGet("{id}")]
     public async Task<ActionResult> GetById(int id)
     {
@@ -62,6 +71,8 @@ public class CustomerController : ControllerBase
         return Ok(result);
     }
 
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     [HttpPut("{id}")]
     public async Task<ActionResult> Put(int id, UpdateCustomerCommand command)
     {
@@ -78,6 +89,8 @@ public class CustomerController : ControllerBase
         return NoContent();
     }
 
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     [HttpDelete("{id}")]
     public async Task<ActionResult> Delete(int id)
     {

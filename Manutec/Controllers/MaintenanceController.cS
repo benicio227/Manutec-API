@@ -1,10 +1,13 @@
 ﻿using Manutec.Application.Commands.MaintenanceEntity;
 using Manutec.Application.Commands.VehicleEntity;
+using Manutec.Application.Models.VehicleModel;
+using Manutec.Application.Models;
 using Manutec.Application.Queries.MaintenanceEntity;
 using Manutec.Infrastructure.Auth;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
+using Manutec.Application.Models.MaintenanceModel;
 
 namespace Manutec.Api.Controllers;
 [Route("api/vehicles/{vehicleId}/maintenances")]
@@ -20,7 +23,9 @@ public class MaintenanceController : ControllerBase
         _loggedUser = loggedUser;
     }
 
-    [HttpPost]
+    [ProducesResponseType(typeof(ResultViewModel<MaintenanceViewModel>), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+    [HttpPost("register")]
     public async Task<ActionResult> Post(int vehicleId, InsertMaintenanceCommand command)
     {
         command.WorkShopId = _loggedUser.WorkShopId;
@@ -36,6 +41,8 @@ public class MaintenanceController : ControllerBase
         return Created(string.Empty, result);
     }
 
+    [ProducesResponseType(typeof(ResultViewModel<List<MaintenanceViewModel>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     [HttpGet]
     public async Task<ActionResult> GetAll(int vehicleId)
     {
@@ -50,6 +57,8 @@ public class MaintenanceController : ControllerBase
     }
 
 
+    [ProducesResponseType(typeof(ResultViewModel<UpdateCompletedStatusMaintenanceViewModel>), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     [HttpPatch("{id}")]
     public async Task<ActionResult> Complete(int id, int vehicleId, UpdateMaintenanceStatusCompletedCommand command)
     {

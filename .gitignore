@@ -53,3 +53,4 @@ Desktop.ini
 
 # Azure Functions (if applicable)
 local.settings.json
+appsettings.json

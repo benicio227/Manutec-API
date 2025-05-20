@@ -21,9 +21,9 @@ public class UpdateMaintenanceStatusHandler : IRequestHandler<UpdateMaintenanceS
             return ResultViewModel<UpdateCompletedStatusMaintenanceViewModel>.Error("Manutenção não encontrada");
         }
 
-        if (!maintenance.IsCompleted)
+        if (maintenance.IsCompleted)
         {
-            return ResultViewModel<UpdateCompletedStatusMaintenanceViewModel>.Error("Manutenção ainda não foi finalizada.");
+            return ResultViewModel<UpdateCompletedStatusMaintenanceViewModel>.Error("Manutenção já foi concluída.");
         }
 
         maintenance.Completed(request.PerformedDate, request.PerformedMileage);

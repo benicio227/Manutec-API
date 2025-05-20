@@ -64,16 +64,15 @@ public async Task<List<Maintenance?>> GetAllUpcomingMaintenance(int workShopId)
 
 ## 📬 Exemplo: Uso do MediatR (CQRS)
 
-O RegisterVehicleCommand encapsula os dados da requisição, enquanto o RegisterVehicleHandler trata a lógica. Esse padrão organiza a aplicação e separa responsabilidade de entrada e execução.
+O InsertVehicleCommand encapsula os dados da requisição, enquanto o InsertVehicleHandler trata a lógica. Esse padrão organiza a aplicação e separa responsabilidade de entrada e execução.
 
 ```csharp
-public record RegisterVehicleCommand(string Plate, string Model, int Year, int CustomerId, int WorkshopId)
-    : IRequest<Result<RegisterVehicleResponse>>;
+public class InsertVehicleCommand : IRequest<ResultViewModel<VehicleViewModel>>;
 ```
 ```csharp
-public class RegisterVehicleHandler : IRequestHandler<RegisterVehicleCommand, Result<RegisterVehicleResponse>>
+public class InsertVehicleHandler : IRequestHandler<InsertVehicleCommand, IRequest<ResultViewModel<VehicleViewModel>>
 {
-    public async Task<Result<RegisterVehicleResponse>> Handle(RegisterVehicleCommand request, CancellationToken cancellationToken)
+    public async Task<Result<VehicleViewModel>> Handle(InsertVehicleCommand request, CancellationToken cancellationToken)
     {
         // Lógica para criar o veículo
     }

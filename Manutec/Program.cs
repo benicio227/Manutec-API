@@ -20,6 +20,9 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+
+        var jwtKey = Environment.GetEnvironmentVariable("JWT_SECRET");
+
         builder.Configuration
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddEnvironmentVariables() 
@@ -28,7 +31,6 @@ public class Program
 
 
         var jwtSettings = builder.Configuration.GetSection("JWT");
-        var secretKey = jwtSettings["Key"];
         var issuer = jwtSettings["Issuer"];
         var audience = jwtSettings["Audience"];
 
@@ -55,7 +57,7 @@ public class Program
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = issuer,
                     ValidAudience = audience,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
                   
                 };
 
@@ -88,6 +90,7 @@ public class Program
         builder.Services.AddScoped<IVehicleRepository, VehicleRepository>();
         builder.Services.AddScoped<IMaintenanceRepository, MaintenanceRepository>();
         builder.Services.AddScoped<IWorkShopRepository, WorkShopRepository>();
+        builder.Services.AddScoped<IGeneralMaintenanceRepository, GeneralMaintenanceRepository>();
 
         builder.Services.AddScoped<IAuthService, AuthService>();
         builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

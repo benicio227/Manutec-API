@@ -14,8 +14,14 @@ public class WorkShopRepository : IWorkShopRepository
     }
     public async Task<WorkShop> Add(WorkShop workShop)
     {
-        _context.WorkShops.Add(workShop);
+        await _context.WorkShops.AddAsync(workShop);
         await _context.SaveChangesAsync();
+        return workShop;
+    }
+
+    public async Task<WorkShop?> EmailExists(string email)
+    {
+        var workShop = await _context.WorkShops.FirstOrDefaultAsync(w => w.Email == email);
         return workShop;
     }
 
@@ -24,4 +30,6 @@ public class WorkShopRepository : IWorkShopRepository
         var workShop = await _context.WorkShops.FirstOrDefaultAsync(w => w.Id == id);
         return workShop;
     }
+
+
 }

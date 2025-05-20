@@ -20,6 +20,7 @@ Além disso, o código segue os princípios de **Clean Code**, com foco em nomes
 - **Atualização e Conclusão de Serviços**: Permite alterar status de ordens e registrar conclusão.
 - **Histórico de Serviços**: Lista ordens finalizadas por cliente ou veículo.
 - **Validações robustas**: Uso de FluentValidation para garantir regras de negócio e integridade dos dados.
+- **Listar manutenções agendadas para os próximos 5 dias** (funcionalidade "upcoming")
 
 ---
 

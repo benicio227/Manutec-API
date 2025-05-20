@@ -16,6 +16,8 @@ public class GetAllCustomerHandler : IRequestHandler<GetAllCustomerQuery, Result
     {
         var customers = await _customerRepository.GetAllByWorkShopId(request.WorkShopId);
 
+
+
         return ResultViewModel<List<Customer>>.Success(customers);
     }
 }

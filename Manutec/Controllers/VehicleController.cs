@@ -36,13 +36,13 @@ public class VehicleController : ControllerBase
             return BadRequest(result.Message);
         }
 
-        return CreatedAtAction(nameof(GetById), new { id = result.Data?.Id}, result.Data);
+        return CreatedAtAction(nameof(GetById), new { customerId = command.CustomerId, id = result.Data?.Id}, result.Data);
     }
 
     [ProducesResponseType(typeof(ResultViewModel<List<VehicleViewModel>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     [HttpGet]
-    [Authorize(Roles = "1")]
+    [Authorize(Roles = "0")]
     public async Task<ActionResult> GetAll(int customerId)
     {
 

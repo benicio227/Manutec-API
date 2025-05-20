@@ -18,8 +18,5 @@ public class CustomerValidator : AbstractValidator<InsertCustomerCommand>
             .Cascade(CascadeMode.Stop)
             .NotEmpty().WithMessage("O telefone é obrigatório.")
             .Matches(@"^\(?\d{2}\)?[\s-]?\d{4,5}-?\d{4}$").WithMessage("Número de telefone inválido.");
-
-        RuleFor(u => u.WorkShopId)
-            .NotEmpty().GreaterThan(0).WithMessage("O id da oficina é obrigatório");
     }
 }

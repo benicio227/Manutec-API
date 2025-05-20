@@ -21,7 +21,8 @@ public class UpdateMaintenanceStatusCompletedCommandValidator : AbstractValidato
                 .NotNull().WithMessage("A data de realização é obrigatória.");
 
             RuleFor(c => c.PerformedMileage)
-                .NotNull().WithMessage("A quilometragem de realização é obrigatória.");
+                .NotNull().WithMessage("A quilometragem de realização é obrigatória.")
+                .GreaterThan(0).WithMessage("A quilometragem deve ser maior que zero.");
         });
     }
 }

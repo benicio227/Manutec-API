@@ -41,7 +41,7 @@ public class UserController : ControllerBase
         return CreatedAtAction(nameof(GetById), new {id = result.Data?.Id}, result.Data);
     }
 
-    [ProducesResponseType(typeof(ResultViewModel<List<UserViewModel>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ResultViewModel<List<GetAllUserViewModel>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     [HttpGet]
     public async Task<ActionResult> GetAll()
@@ -58,7 +58,7 @@ public class UserController : ControllerBase
         return Ok(result);
     }
 
-    [ProducesResponseType(typeof(ResultViewModel<UserViewModel>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ResultViewModel<GetByIdUserViewModel>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     [HttpGet("{id}")]
     public async Task<ActionResult> GetById(int id)

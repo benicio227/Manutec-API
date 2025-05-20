@@ -85,4 +85,4 @@ Exemplo: https://localhost:porta/swagger
 
 ## License
 
-Este projeto está licenciado sob a [Liceça MIT](LICENSE)
+Este projeto está licenciado sob a ![MIT License](https://img.shields.io/badge/license-MIT-green.svg)

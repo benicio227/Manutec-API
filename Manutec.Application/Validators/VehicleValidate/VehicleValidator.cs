@@ -9,8 +9,6 @@ public class VehicleValidator : AbstractValidator<InsertVehicleCommand>
         RuleFor(v => v.CustomerId)
             .NotEmpty().GreaterThan(0).WithMessage("O id do cliente é obrigatório.");
 
-        RuleFor(v => v.WorkShopId)
-            .NotEmpty().GreaterThan(0).WithMessage("O id da oficina é obrigatório");
 
         RuleFor(v => v.Brand)
             .Cascade(CascadeMode.Stop)

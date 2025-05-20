@@ -1,4 +1,6 @@
-﻿namespace Manutec.Application.Models.WorkShopModel
+﻿using Manutec.Core.Entities;
+
+namespace Manutec.Application.Models.WorkShopModel
 {
     public class WorkShopViewModelId
     {
@@ -7,6 +9,11 @@
             Id = id;
         }
 
-        public int Id;
+        public int Id { get; set; }
+
+        public static WorkShopViewModelId FromEntity(WorkShop workshop)
+        {
+            return new WorkShopViewModelId(workshop.Id);
+        }
     }
 }

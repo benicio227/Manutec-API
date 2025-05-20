@@ -82,3 +82,7 @@ git clone git@github.com:benicio227/Manutec-API.git
    ```
 OBS! A porta 7148 é a padrão configurada nesse projto. Caso esteja usando outra porta localmente, ajuste a URL conforme necessário.
 Exemplo: https://localhost:porta/swagger
+
+## License
+
+Este projeto está licenciado sob a [Liceça MIT](LICENSE)

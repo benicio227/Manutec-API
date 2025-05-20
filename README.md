@@ -20,6 +20,7 @@ Além disso, o código segue os princípios de **Clean Code**, com foco em nomes
 - **Atualização e Conclusão de Serviços**: Permite alterar status de ordens e registrar conclusão.
 - **Histórico de Serviços**: Lista ordens finalizadas por cliente ou veículo.
 - **Validações robustas**: Uso de FluentValidation para garantir regras de negócio e integridade dos dados.
+- **Listar manutenções agendadas para os próximos 5 dias** (funcionalidade "upcoming")
 
 ---
 
@@ -82,3 +83,7 @@ git clone git@github.com:benicio227/Manutec-API.git
    ```
 OBS! A porta 7148 é a padrão configurada nesse projto. Caso esteja usando outra porta localmente, ajuste a URL conforme necessário.
 Exemplo: https://localhost:porta/swagger
+
+## License
+
+Este projeto está licenciado sob a [Licença MIT](LICENSE) 

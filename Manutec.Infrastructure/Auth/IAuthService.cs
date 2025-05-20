@@ -52,7 +52,8 @@ public class AuthService : IAuthService
 
         var issuer = _configuration["JWT:Issuer"];
         var audience = _configuration["JWT:Audience"];
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"]));
+        var keyValue = Environment.GetEnvironmentVariable("JWT_SECRET");
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(keyValue));
 
  
 

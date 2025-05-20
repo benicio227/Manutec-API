@@ -22,7 +22,7 @@ public class LoginUserHandler : IRequestHandler<LoginUserCommand, ResultViewMode
 
         if (user is null)
         {
-            return ResultViewModel<LoginViewModel>.Error("Erro de login.");
+            return ResultViewModel<LoginViewModel>.Error("Usuário não encontrado");
         }
 
         var token = _authService.GenerateToken(user.Email, user.Role, user.WorkShopId);

@@ -4,7 +4,7 @@ using Manutec.Core.Repositories;
 using MediatR;
 
 namespace Manutec.Application.Commands.MaintenanceEntity;
-public class InsertMaintenanceHandler : IRequestHandler<InsertMaintenanceCommand, ResultViewModel<MaintenanceViewModel>>
+public class InsertMaintenanceHandler : IRequestHandler<InsertMaintenanceCommand, ResultViewModel<InsertMaintenanceViewModel>>
 {
     private readonly IMaintenanceRepository _maintenanceRepository;
     private readonly IVehicleRepository _vehicleRepository;
@@ -13,7 +13,7 @@ public class InsertMaintenanceHandler : IRequestHandler<InsertMaintenanceCommand
         _maintenanceRepository = maintenanceRepository;
         _vehicleRepository = vehicleRepository;
     }
-    public async Task<ResultViewModel<MaintenanceViewModel>> Handle(InsertMaintenanceCommand request, CancellationToken cancellationToken)
+    public async Task<ResultViewModel<InsertMaintenanceViewModel>> Handle(InsertMaintenanceCommand request, CancellationToken cancellationToken)
     {
         var maintenance = request.ToEntity();
 
@@ -21,7 +21,7 @@ public class InsertMaintenanceHandler : IRequestHandler<InsertMaintenanceCommand
 
         if (vheicle is null)
         {
-            return ResultViewModel<MaintenanceViewModel>.Error("Veículo não encontrado.");
+            return ResultViewModel<InsertMaintenanceViewModel>.Error("Veículo não encontrado.");
         }
 
         var diff = maintenance.ScheduledMileage - vheicle.CurrentMileage;
@@ -35,13 +35,12 @@ public class InsertMaintenanceHandler : IRequestHandler<InsertMaintenanceCommand
 
         if (maintenanceExist is null)
         {
-            return ResultViewModel<MaintenanceViewModel>.Error("Manutenção não cadastrada");
+            return ResultViewModel<InsertMaintenanceViewModel>.Error("Manutenção não cadastrada");
         }
 
 
+        var model = InsertMaintenanceViewModel.FromEntity(maintenanceExist);
 
-        var model = MaintenanceViewModel.FromEntity(maintenance);
-
-        return ResultViewModel<MaintenanceViewModel>.Success(model);
+        return ResultViewModel<InsertMaintenanceViewModel>.Success(model);
     }
 }

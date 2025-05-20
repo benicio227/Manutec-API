@@ -33,12 +33,12 @@ public class MaintenanceController : ControllerBase
 
         var result = await _mediator.Send(command);
 
-        if (result is null)
+        if (!result.IsSuccess)
         {
             return BadRequest(result.Message);
         }
 
-        return Created(string.Empty, result);
+        return CreatedAtAction(nameof(GetById), new {vehicleId = command.VehicleId, id = result.Data?.Id }, result.Data);
     }
 
     [ProducesResponseType(typeof(ResultViewModel<List<MaintenanceViewModel>>), StatusCodes.Status200OK)]
@@ -57,6 +57,21 @@ public class MaintenanceController : ControllerBase
     }
 
 
+    [ProducesResponseType(typeof(ResultViewModel<MaintenanceViewModel>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+    [HttpGet("{id}")]
+    public async Task<ActionResult> GetById(int id, int vehicleId)
+    {
+        var result = await _mediator.Send(new GetByIdMaintenanceQuery(_loggedUser.WorkShopId, vehicleId, id));
+
+        if (!result.IsSuccess)
+        {
+            return BadRequest(result.Message);
+        }
+
+        return Ok(result);
+    }
+
     [ProducesResponseType(typeof(ResultViewModel<UpdateCompletedStatusMaintenanceViewModel>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     [HttpPatch("{id}")]
@@ -74,5 +89,4 @@ public class MaintenanceController : ControllerBase
 
         return Created(string.Empty, result);
     }
-
 }

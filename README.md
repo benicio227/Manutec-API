@@ -39,6 +39,48 @@ Além disso, o código segue os princípios de **Clean Code**, com foco em nomes
 
 ---
 
+## 🔎 Destaque de Código - Filtro de Manutenções Agendadas (Upcoming)
+
+A API permite listar as manutenções agendadas que acontecerão nos próximos 5 dias, com base na data atual e no ID da oficina (obtido a partir do usuário autenticado). Isso é útil para alertar sobre serviços que estão próximos da data de execução.
+
+Trecho do método utilizado no repositório:
+
+```csharp
+public async Task<List<Maintenance?>> GetAllUpcomingMaintenance(int workShopId)
+{
+    var today = DateTime.Now;
+    var nextFiveDays = today.AddDays(5);
+
+    var maintenances = await _context.Maintenances
+        .Where(m => m.ScheduledDate >= today &&
+            m.ScheduledDate <= nextFiveDays &&
+            !m.IsCompleted &&
+            m.WorkShopId == workShopId)
+        .ToListAsync();
+
+    return maintenances;
+}
+````
+
+## 📬 Exemplo: Uso do MediatR (CQRS)
+
+O RegisterVehicleCommand encapsula os dados da requisição, enquanto o RegisterVehicleHandler trata a lógica. Esse padrão organiza a aplicação e separa responsabilidade de entrada e execução.
+
+```csharp
+public record RegisterVehicleCommand(string Plate, string Model, int Year, int CustomerId, int WorkshopId)
+    : IRequest<Result<RegisterVehicleResponse>>;
+```
+```csharp
+public class RegisterVehicleHandler : IRequestHandler<RegisterVehicleCommand, Result<RegisterVehicleResponse>>
+{
+    public async Task<Result<RegisterVehicleResponse>> Handle(RegisterVehicleCommand request, CancellationToken cancellationToken)
+    {
+        // Lógica para criar o veículo
+    }
+}
+```
+
+
 ## Requisitos
 
 - Visual Studio 2022+ ou Visual Studio Code

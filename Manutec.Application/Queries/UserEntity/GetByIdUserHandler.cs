@@ -1,10 +1,11 @@
 ﻿using Manutec.Application.Models;
+using Manutec.Application.Models.UserModel;
 using Manutec.Core.Entities;
 using Manutec.Core.Repositories;
 using MediatR;
 
 namespace Manutec.Application.Queries.UserEntity;
-public class GetByIdUserHandler : IRequestHandler<GetByIdUserQuery, ResultViewModel<User>>
+public class GetByIdUserHandler : IRequestHandler<GetByIdUserQuery, ResultViewModel<GetByIdUserViewModel>>
 {
     private readonly IUserRepository _userRepository;
 
@@ -12,15 +13,17 @@ public class GetByIdUserHandler : IRequestHandler<GetByIdUserQuery, ResultViewMo
     {
         _userRepository = userRepository;
     }
-    public async Task<ResultViewModel<User>> Handle(GetByIdUserQuery request, CancellationToken cancellationToken)
+    public async Task<ResultViewModel<GetByIdUserViewModel>> Handle(GetByIdUserQuery request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetById(request.WorkShopId, request.Id);
 
         if (user == null)
         {
-            return ResultViewModel<User>.Error("Nenhum usuário encontrado");
+            return ResultViewModel<GetByIdUserViewModel>.Error("Nenhum usuário encontrado");
         }
 
-        return ResultViewModel<User>.Success(user);
+        var model = GetByIdUserViewModel.FromEntity(user);
+
+        return ResultViewModel<GetByIdUserViewModel>.Success(model);
     }
 }

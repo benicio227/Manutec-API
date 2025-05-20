@@ -5,7 +5,7 @@ using Manutec.Core.Enums;
 using MediatR;
 
 namespace Manutec.Application.Commands.MaintenanceEntity;
-public class InsertMaintenanceCommand : IRequest<ResultViewModel<MaintenanceViewModel>>
+public class InsertMaintenanceCommand : IRequest<ResultViewModel<InsertMaintenanceViewModel>>
 {
     public int VehicleId { get;  set; }
     public int WorkShopId { get; set; }
